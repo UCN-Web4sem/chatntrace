@@ -3,8 +3,11 @@
 import Vue from "vue";
 import App from "./App";
 import router from "./router";
+import CreateUser from "@/components/CreateUser";
 
 Vue.config.productionTip = false;
+
+Vue.component("create-user", CreateUser);
 
 /* eslint-disable no-new */
 new Vue({

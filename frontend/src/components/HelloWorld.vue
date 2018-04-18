@@ -80,6 +80,8 @@
         </a>
       </li>
     </ul>
+    <create-user></create-user>
+
   </div>
 </template>
 
