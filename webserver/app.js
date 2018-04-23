@@ -41,4 +41,14 @@ app.use(function(err, req, res, next) {
 	res.render("error");
 });
 
+// TODO move the following into its own file/module
+const events = require("commonsettings").events;
+const bll = require("");
+io.on("connection", socket => {
+	console.log("Got a connection");
+	socket.on(events.CREATE_USER, username => {
+		console.log("create user", username);
+	});
+});
+
 module.exports = app;

@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import api from "@/api/api";
+
 export default {
 	name: "CreateUser",
 	data() {
@@ -20,7 +22,7 @@ export default {
 	methods: {
 		onSubmit() {
 			// TODO: Call the api
-			console.log(this.username);
+			api.createUser(this.username);
 		}
 	}
 };
