@@ -20,6 +20,12 @@ module.exports = {
 				target: "http://localhost:3000/",
 				changeOrigin: true,
 				pathRewrite: {}
+			},
+			"/socket.io/": {
+				target: "ws://localhost:3000",
+				ws: true,
+				changeOrigin: true,
+				logLevel: "debug"
 			}
 		},
 
