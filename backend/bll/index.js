@@ -1,3 +1,4 @@
 module.exports = {
-	userFacade: require("./userFacade")
+	userFacade: require("./userFacade"),
+	lobbyFacade: require("./lobbyFacade")
 };

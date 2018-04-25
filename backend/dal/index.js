@@ -1,3 +1,4 @@
 module.exports = {
-	user: require("./userDAL")
+	user: require("./userDAL"),
+	lobby: require("./lobbyDAL")
 };
