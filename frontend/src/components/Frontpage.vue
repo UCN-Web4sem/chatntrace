@@ -23,12 +23,10 @@ export default {
 	name: "FrontPageUser",
 	data() {
 		return {
-            showModal: true,
 		};
 	},
 	methods: {
 		onSubmit() {
-			this.showModal = false;
 		}
 	}
 };
