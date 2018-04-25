@@ -4,11 +4,12 @@ import Vue from "vue";
 import App from "./App";
 import router from "./router";
 import CreateUser from "@/components/CreateUser";
+import FrontPageUser from "@/components/Frontpage";
 
 Vue.config.productionTip = false;
 
 Vue.component("create-user", CreateUser);
-
+Vue.component("frontpage-user", FrontPageUser)
 /* eslint-disable no-new */
 new Vue({
 	el: "#app",
