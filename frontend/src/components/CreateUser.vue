@@ -3,9 +3,9 @@
 		<div class="form-group">
 			<label for="usernameInput">User Name</label>
 			<input v-model="username" type="text" class="form-control" id="usernameInput" aria-describedby="usernameHelp" placeholder="Enter user name">
-			<small id="usernameHelp" class="form-text text-muted">The nick name that other user will see</small>
+			<small id="usernameHelp" class="form-text text-muted">The nick name that other users will see</small>
 		</div>
-		<button @click="onSubmit" type="submit" class="btn btn-primary">Submit</button>
+		<button @click="onSubmit" type="submit" class="btn btn-primary">Play</button>
 	</form>
 </template>
 

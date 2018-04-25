@@ -1,7 +1,9 @@
 <template>
   <div>
     <frontpage-user></frontpage-user>
+    <button type="button" data-toggle="modal" data-target="#myModal">Play!</button>
   </div>
+
 </template>
 
 

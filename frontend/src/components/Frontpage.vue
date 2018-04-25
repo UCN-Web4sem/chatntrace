@@ -1,6 +1,6 @@
-<template v-if="showModal === true">
+<template>
     <div>
-        <div class="modal" tabindex="-1" role="dialog">
+        <div id="myModal" class="modal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -19,14 +19,11 @@
 </template>
 
 <script>
-import api from "@/api/api";
-
 export default {
 	name: "FrontPageUser",
 	data() {
 		return {
-			showModal: true,
-			username: ""
+            showModal: true,
 		};
 	},
 	methods: {
@@ -36,7 +33,3 @@ export default {
 	}
 };
 </script>
-
-<style>
-
-</style>
