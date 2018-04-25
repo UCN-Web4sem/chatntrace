@@ -54,6 +54,15 @@ io.on("connection", socket => {
 			console.log("the user", usr, "was saved in the db");
 		});
 	});
+	socket.on(events.CREATE_LOBBY, lobbyname => {
+		lobbyFacade.create(lobbyname, (err, lob) => {
+			if (err) {
+				// TODO: err handling
+				return console.log(err);
+			}
+			console.log("the lobby : ", lob, " was created in the db");
+		});
+	});
 });
 
 module.exports = app;
