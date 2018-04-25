@@ -1,3 +1,4 @@
 {
-	"CREATE_USER": "create user"
+	"CREATE_USER": "create user",
+	"CREATE_LOBBY": "create lobby"
 }
