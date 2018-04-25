@@ -3,7 +3,7 @@ const model = require("../model");
 describe("lobby", function() {
 	describe("#create()", function() {
 		it("should save without error", function(done) {
-			bll.lobbyFacade.create("NiklasTestLobby", (err, lob) => {
+			bll.lobbyFacade.create("TestLobby", (err, lob) => {
 				if (err) {
 					done(err);
 				}
