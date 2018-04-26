@@ -1,33 +1,38 @@
 <template>
-    <div>
-        <div id="myModal" class="modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Welcome</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <create-user></create-user>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  <div>
+    <frontpage-user></frontpage-user>
+    <button class="btn btn-success btn-lg" type="button" data-toggle="modal" data-target="#myModal">Play!</button>
+  </div>
+
 </template>
+
 
 <script>
 export default {
-	name: "FrontPageUser",
+	name: "Frontpage",
 	data() {
 		return {
+			msg: "Welcome to the frontpage!"
 		};
-	},
-	methods: {
-		onSubmit() {
-		}
 	}
 };
 </script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+h1,
+h2 {
+	font-weight: normal;
+}
+ul {
+	list-style-type: none;
+	padding: 0;
+}
+li {
+	display: inline-block;
+	margin: 0 10px;
+}
+a {
+	color: #42b983;
+}
+</style>
