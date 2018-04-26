@@ -14,5 +14,9 @@ module.exports = {
 		DAL.lobby.create(lob, (err, lobby) => {
 			cb(err, lob);
 		});
+	},
+
+	getAll(cb) {
+		DAL.lobby.getAll(cb);
 	}
 };
