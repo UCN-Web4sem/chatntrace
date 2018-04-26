@@ -9,12 +9,13 @@
 
 <script>
 import api from "@/api/api";
+import { events } from "commonsettings";
 
 export default {
 	name: "Lobbies",
 	data() {
 		return {
-			lobbies: api.state.lobbies
+			lobbies: []
 		};
 	},
 	methods: {
@@ -22,6 +23,12 @@ export default {
 			// TODO: Call the api
 			// api.createUser(this.username);
 		}
+	},
+	mounted() {
+		socket.on(events.ALL_LOBBIES, lobbies => {
+			this.lobbies = lobbies;
+		});
+		socket.on(events.NEW_LOBBY, lobby => this.lobbies.push(lobby));
 	}
 };
 </script>

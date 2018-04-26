@@ -40,11 +40,21 @@ app.use(function(err, req, res, next) {
 });
 
 // TODO: move the following into its own file/module
+let lobbies = [];
+
 const events = require("commonsettings").events;
 const bll = require("backend").bll;
 const userFacade = bll.userFacade;
+const lobbyFacade = bll.lobbyFacade;
+
 io.on("connection", socket => {
 	console.log("Got a connection");
+
+	// Give the socket a list of all the lobbies
+	lobbyFacade.getAll(lobbies => {
+		socket.emit(events.ALL_LOBBIES, lobbies);
+	});
+
 	socket.on(events.CREATE_USER, username => {
 		userFacade.create(username, (err, usr) => {
 			if (err) {
