@@ -5,7 +5,9 @@
 			<input v-model="username" type="text" class="form-control" id="usernameInput" aria-describedby="usernameHelp" placeholder="Enter username">
 			<small id="usernameHelp" class="form-text text-muted">The nickname that other users will see</small>
 		</div>
-		<button @click="onSubmit" type="submit" class="btn btn-success">Play</button>
+		<router-link to="/Dashboard">
+			<button @click="onSubmit" type="submit" class="btn btn-success">Play</button>
+        </router-link>
 	</form>
 </template>
 

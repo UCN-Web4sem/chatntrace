@@ -4,7 +4,7 @@ import Vue from "vue";
 import App from "./App";
 import router from "./router";
 import CreateUser from "@/components/CreateUser";
-import FrontPageUser from "@/components/Frontpage";
+import FrontPageUser from "@/components/FrontpageUser";
 
 Vue.config.productionTip = false;
 
