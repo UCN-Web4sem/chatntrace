@@ -1,6 +1,8 @@
 <template>
-  <div>
+  <div id="frontPage">
     <frontpage-user></frontpage-user>
+		<img src="../assets/logo.png">
+		<br>
     <button class="btn btn-success btn-lg" type="button" data-toggle="modal" data-target="#myModal">Play!</button>
   </div>
 
@@ -34,5 +36,10 @@ li {
 }
 a {
 	color: #42b983;
+}
+
+#frontPage {
+	text-align: center;
+	margin-top: 60px;
 }
 </style>
