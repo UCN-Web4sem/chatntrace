@@ -27,8 +27,8 @@ export default {
 	mounted() {
 		socket.on(events.ALL_LOBBIES, lobbies => {
 			this.lobbies = lobbies;
+			socket.on(events.NEW_LOBBY, lobby => this.lobbies.push(lobby));
 		});
-		socket.on(events.NEW_LOBBY, lobby => this.lobbies.push(lobby));
 	}
 };
 </script>
