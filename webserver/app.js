@@ -73,6 +73,15 @@ io.on("connection", socket => {
 			console.log("the lobby : ", lob, " was created in the db");
 		});
 	});
+	socket.on(events.JOIN_LOBBY, (lobby, user) => {
+		lobbyFacade.addUserToLobby(lobby, user, err => {
+			if (err) {
+				// tODO: err handling
+				return console.log(err);
+			}
+			console.log("the user : ", user, "was added to the ", lobby, "in the db");
+		});
+	});
 });
 
 module.exports = app;
