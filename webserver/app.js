@@ -61,6 +61,7 @@ io.on("connection", socket => {
 				// TODO: err handling
 				return console.log(err);
 			}
+			io.emit(events.NEW_USER, usr); // TODO: should use socket.broadcast.emit and handle update in client
 			console.log("the user", usr, "was saved in the db");
 		});
 	});

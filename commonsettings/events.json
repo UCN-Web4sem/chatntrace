@@ -3,5 +3,6 @@
 	"CREATE_LOBBY": "create lobby",
 	"ALL_LOBBIES": "all lobbies",
 	"NEW_LOBBY": "new lobby",
-	"JOIN_LOBBY": "user joins a lobby"
+	"JOIN_LOBBY": "user joins a lobby",
+	"NEW_USER": "new user"
 }
