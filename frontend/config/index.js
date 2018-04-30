@@ -17,12 +17,20 @@ module.exports = {
 			// will point to localhost:3000/socket.io/socket.io.js thus serving the correct file
 			// TODO: REPORT
 			"/socket.io/socket.io.js": {
-				target: "http://localhost:3000/",
+				target:
+					"http://" +
+					(process.env.WEB_HOST || "localhost") +
+					":" +
+					(process.env.WEB_PORT || "3000"),
 				changeOrigin: true,
 				pathRewrite: {}
 			},
 			"/socket.io/": {
-				target: "ws://localhost:3000",
+				target:
+					"ws://" +
+					(process.env.WEB_HOST || "localhost") +
+					":" +
+					(process.env.WEB_PORT || "3000"),
 				ws: true,
 				changeOrigin: true,
 				logLevel: "debug"
