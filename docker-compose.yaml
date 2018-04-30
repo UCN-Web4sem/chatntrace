@@ -1,0 +1,25 @@
+version: '2'
+services:
+  webserver:
+    build:
+      context: . 
+      dockerfile: ./Dockerfile.webserver
+    ports:
+     - "3000:3000"
+    volumes:
+     - .:/code
+    network_mode: "host"
+  frontend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.frontend
+    # environment:
+      # - HOST=0.0.0.0
+      # - WEB_HOST="0.0.0.0"
+      # - WEB_PORT="3001"
+    ports:
+      - "8080:8080"
+      # - "3001:3000"
+    volumes:
+    - .:/code
+    network_mode: "host"

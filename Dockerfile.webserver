@@ -1,0 +1,25 @@
+FROM node:9
+
+WORKDIR /usr/src/app
+
+# Backend
+COPY ./backend/package*.json ./backend/
+RUN cd backend && npm install
+COPY ./backend ./backend
+
+# Common settings
+COPY ./commonsettings/package*.json ./commonsettings/
+RUN cd commonsettings && npm install
+COPY ./commonsettings ./commonsettings
+
+
+# Webserver
+COPY ./webserver/package*.json ./webserver/
+RUN cd webserver && npm install
+COPY ./webserver ./webserver
+
+WORKDIR /usr/src/app/webserver
+
+EXPOSE 3000
+
+CMD [ "npm", "run", "dev" ]
