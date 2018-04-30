@@ -18,4 +18,6 @@ WORKDIR /usr/src/app/frontend
 
 EXPOSE 8080
 
+USER node
+
 CMD [ "npm", "run", "dev" ]
