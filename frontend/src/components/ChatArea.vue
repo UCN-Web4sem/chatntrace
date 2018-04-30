@@ -10,8 +10,6 @@
 </template>
 
 <script>
-import Vue from "vue";
-
 export default {
     name: "ChatArea",
     props: ["messages"],
@@ -22,3 +20,11 @@ export default {
 	}
 };
 </script>
+
+<style>
+.chat-area {
+    height: 95.5vh;
+    border-color: black;
+    border: solid;
+}
+</style>

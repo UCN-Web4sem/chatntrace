@@ -1,8 +1,8 @@
 <template>
-   <form @submit="send" action="#">
+   <form class="chat-form" action="#">
        <div class="input-group chat-input">
-		    <input :value="value" v-on:input="$emit('input', $event.target.value)" spellcheck="true" autocomplete="off" class="form-control" aria-label="Message">
-			<button class="btn btn-primary" type="submit">Send</button>
+		    <input :value="value" spellcheck="true" autocomplete="off" class="form-control" aria-label="Message">
+			<button @click="onSubmit" class="btn btn-primary" type="submit">Send</button>
 		</div>
 	</form>
 </template>
@@ -17,6 +17,18 @@ export default {
 		return {};
 	},
 	methods: {
+        onSubmit() {
+            // TODO: Call backend when sending message
+		}
 	}
 };
 </script>
+
+<style>
+.chat-form {
+    border-color: black;
+    border-bottom: solid;
+    border-right: solid;
+    border-left: solid;
+}
+</style>
