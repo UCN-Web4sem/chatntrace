@@ -29,12 +29,9 @@ export default {
 		}
 	},
 	mounted() {
-		console.log("do something");
 		socket.on(events.ALL_LOBBIES, lobbies => {
 			this.lobbies = lobbies;
-			console.log("hej", lobbies);
 			socket.on(events.NEW_LOBBY, lobby => {
-				console.log("hello", lobby);
 				this.lobbies.push(lobby);
 			});
 		});
