@@ -7,7 +7,7 @@ services:
     ports:
      - "3000:3000"
     volumes:
-     - .:/code
+     - ./webserver:/usr/src/app/webserver
     network_mode: "host"
   frontend:
     build:
@@ -21,5 +21,5 @@ services:
       - "8080:8080"
       # - "3001:3000"
     volumes:
-    - .:/code
+    - ./frontend:/usr/src/app/frontend
     network_mode: "host"
