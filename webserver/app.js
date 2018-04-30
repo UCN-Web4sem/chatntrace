@@ -70,6 +70,7 @@ io.on("connection", socket => {
 				// TODO: err handling
 				return console.log(err);
 			}
+			io.emit(events.NEW_LOBBY, lob); // TODO: should use socket.broadcast.emit and handle update in client
 			console.log("the lobby : ", lob, " was created in the db");
 		});
 	});
