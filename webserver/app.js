@@ -62,6 +62,9 @@ io.on("connection", socket => {
 				return console.log(err);
 			}
 			io.emit(events.NEW_USER, usr); // TODO: should use socket.broadcast.emit and handle update in client
+			lobbyFacade.getAll(lobbies => {
+				socket.emit(events.ALL_LOBBIES, lobbies);
+			});
 			console.log("the user", usr, "was saved in the db");
 		});
 	});

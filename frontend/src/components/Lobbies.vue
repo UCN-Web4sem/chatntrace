@@ -31,6 +31,7 @@ export default {
 	mounted() {
 		socket.on(events.ALL_LOBBIES, lobbies => {
 			this.lobbies = lobbies;
+			console.log(lobbies);
 			socket.on(events.NEW_LOBBY, lobby => {
 				this.lobbies.push(lobby);
 			});
