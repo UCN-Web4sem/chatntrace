@@ -16,6 +16,7 @@ module.exports = {
 		db
 			.child(lobby.id)
 			.child("users")
+			.child(user.id)
 			.set(user, cb);
 	},
 	removeUserFromLobby(lobby, user, cb) {
@@ -23,6 +24,7 @@ module.exports = {
 		db
 			.child(lobby.id)
 			.child("users")
-			.set(null, cb);
+			.child(user.id)
+			.remove(cb);
 	}
 };
