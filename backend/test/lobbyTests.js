@@ -11,4 +11,24 @@ describe("lobby", function() {
 			});
 		});
 	});
+	describe("#JoinALobby", function() {
+		it("should run without error", function(done) {
+			bll.userFacade.create("TestJoinALobby", function(err, user) {
+				if (err) {
+					done(err);
+				}
+				bll.lobbyFacade.create("TestJoinALobby", function(err, lobby) {
+					if (err) {
+						done(err);
+					}
+					bll.lobbyFacade.addUserToLobby(lobby, user, function(err) {
+						if (err) {
+							done(err);
+						}
+						done();
+					});
+				});
+			});
+		});
+	});
 });

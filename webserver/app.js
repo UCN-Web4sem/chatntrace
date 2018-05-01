@@ -61,6 +61,10 @@ io.on("connection", socket => {
 				// TODO: err handling
 				return console.log(err);
 			}
+			io.emit(events.NEW_USER, usr); // TODO: should use socket.broadcast.emit and handle update in client
+			lobbyFacade.getAll(lobbies => {
+				socket.emit(events.ALL_LOBBIES, lobbies);
+			});
 			console.log("the user", usr, "was saved in the db");
 		});
 	});
@@ -70,7 +74,17 @@ io.on("connection", socket => {
 				// TODO: err handling
 				return console.log(err);
 			}
+			io.emit(events.NEW_LOBBY, lob); // TODO: should use socket.broadcast.emit and handle update in client
 			console.log("the lobby : ", lob, " was created in the db");
+		});
+	});
+	socket.on(events.JOIN_LOBBY, (lobby, user) => {
+		lobbyFacade.addUserToLobby(lobby, user, err => {
+			if (err) {
+				// tODO: err handling
+				return console.log(err);
+			}
+			console.log("the user : ", user, "was added to the ", lobby, "in the db");
 		});
 	});
 });

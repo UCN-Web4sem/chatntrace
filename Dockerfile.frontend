@@ -1,0 +1,23 @@
+FROM node:9
+
+WORKDIR /usr/src/app
+
+# Common settings
+COPY ./commonsettings/package*.json ./commonsettings/
+RUN cd commonsettings && npm install
+COPY ./commonsettings ./commonsettings
+
+
+# Webserver
+COPY ./frontend/package*.json ./frontend/
+RUN cd frontend && npm install
+COPY ./frontend ./frontend
+
+
+WORKDIR /usr/src/app/frontend
+
+EXPOSE 8080
+
+USER node
+
+CMD [ "npm", "run", "dev" ]

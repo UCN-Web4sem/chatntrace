@@ -18,5 +18,9 @@ module.exports = {
 
 	getAll(cb) {
 		DAL.lobby.getAll(cb);
+	},
+
+	addUserToLobby(lobby, user, cb) {
+		DAL.lobby.addUserToLobby(lobby, user, cb);
 	}
 };
