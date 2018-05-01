@@ -26,7 +26,7 @@ export default {
 			// TODO: Call the api
 			api.createUser(this.username);
 			socket.on(events.NEW_USER, user => {
-				state = user;
+				state.user = user;
 			});
 			router.push("Dashboard");
 		}
