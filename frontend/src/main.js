@@ -12,8 +12,8 @@ Vue.config.productionTip = false;
 
 Vue.component("create-user", CreateUser);
 Vue.component("frontpage-user", FrontPageUser);
-Vue.component("CreateLobbyModal", CreateLobbyModal);
-Vue.component("CreateLobby", CreateLobby);
+Vue.component("create-lobby-modal", CreateLobbyModal);
+Vue.component("create-lobby", CreateLobby);
 /* eslint-disable no-new */
 new Vue({
 	el: "#app",

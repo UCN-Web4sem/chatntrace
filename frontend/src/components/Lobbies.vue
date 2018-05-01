@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<CreateLobbyModal></CreateLobbyModal>
+		<create-lobby-modal></create-lobby-modal>
 		<button class="btn btn-success btn-lg" type="button" data-toggle="modal" data-target="#CreateLobbyModal">Create a new lobby</button>
 		<div class="lobby-list">
 			<strong>Lobbies</strong>

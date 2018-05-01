@@ -9,7 +9,7 @@
                         <span aria-hidden="true">&times;</span>
                     </div>
                     <div class="modal-body">
-                        <CreateLobby></CreateLobby>
+                        <create-lobby></create-lobby>
                     </div>
                 </div>
             </div>
