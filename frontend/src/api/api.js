@@ -6,5 +6,8 @@ export default {
 	},
 	createLobby(lobbyname) {
 		socket.emit(events.CREATE_LOBBY, lobbyname);
+	},
+	joinLobby(lobby, user) {
+		socket.emit(events.JOIN_LOBBY, lobby, user);
 	}
 };

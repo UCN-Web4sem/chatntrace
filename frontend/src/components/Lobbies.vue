@@ -5,7 +5,7 @@
 		<div class="lobby-list">
 			<strong>Lobbies</strong>
 			<ul class="list-group">
-				<li v-for="lobby in lobbies" :key="lobby.id" class="list-group-item">{{ lobby.name }}</li>
+				<li v-for="lobby in lobbies" :key="lobby.id" v-on:click="joinLobby(lobby)" class="list-group-item">{{ lobby.name }}</li>
 			</ul>
 		</div>
 	</div>
@@ -19,13 +19,18 @@ export default {
 	name: "Lobbies",
 	data() {
 		return {
-			lobbies: []
+			lobbies: [],
+			currentLobby: {}
 		};
 	},
 	methods: {
 		onSubmit() {
 			// TODO: Call the api
 			// api.createUser(this.username);
+		},
+		joinLobby: function(lobby) {
+			console.log("noget noget", lobby, "and ", state);
+			api.joinLobby(lobby, state);
 		}
 	},
 	mounted() {
