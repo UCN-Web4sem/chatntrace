@@ -17,5 +17,12 @@ module.exports = {
 			.child(lobby.id)
 			.child("users")
 			.set(user, cb);
+	},
+	removeUserFromLobby(lobby, user, cb) {
+		console.log(user.id);
+		db
+			.child(lobby.id)
+			.child("users")
+			.set(null, cb);
 	}
 };

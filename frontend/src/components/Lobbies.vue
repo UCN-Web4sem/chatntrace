@@ -29,8 +29,9 @@ export default {
 			// api.createUser(this.username);
 		},
 		joinLobby: function(lobby) {
-			console.log("noget noget", lobby, "and ", state);
-			api.joinLobby(lobby, state);
+			console.log("noget noget", lobby, "and ", state.user);
+			api.joinLobby(lobby, state.user);
+			currentLobby = lobby;
 		}
 	},
 	mounted() {
