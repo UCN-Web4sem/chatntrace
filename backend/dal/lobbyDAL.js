@@ -11,5 +11,11 @@ module.exports = {
 			const lobbies = Object.keys(val).map(key => val[key]);
 			cb(lobbies);
 		});
+	},
+	addUserToLobby(lobby, user, cb) {
+		db
+			.child(lobby.id)
+			.child("users")
+			.set(user, cb);
 	}
 };

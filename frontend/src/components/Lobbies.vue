@@ -1,9 +1,13 @@
 <template>
-	<div class="lobby-list">
-		<strong>Lobbies</strong>
-		<ul class="list-group">
-			<li v-for="lobby in lobbies" :key="lobby.id" class="list-group-item">{{ lobby.name }}</li>
-		</ul>
+	<div>
+		<create-lobby-modal></create-lobby-modal>
+		<button class="btn btn-success btn-lg" type="button" data-toggle="modal" data-target="#CreateLobbyModal">Create a new lobby</button>
+		<div class="lobby-list">
+			<strong>Lobbies</strong>
+			<ul class="list-group">
+				<li v-for="lobby in lobbies" :key="lobby.id" class="list-group-item">{{ lobby.name }}</li>
+			</ul>
+		</div>
 	</div>
 </template>
 
@@ -27,7 +31,10 @@ export default {
 	mounted() {
 		socket.on(events.ALL_LOBBIES, lobbies => {
 			this.lobbies = lobbies;
-			socket.on(events.NEW_LOBBY, lobby => this.lobbies.push(lobby));
+			console.log(lobbies);
+			socket.on(events.NEW_LOBBY, lobby => {
+				this.lobbies.push(lobby);
+			});
 		});
 	}
 };

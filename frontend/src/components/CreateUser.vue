@@ -5,14 +5,14 @@
 			<input v-model="username" type="text" class="form-control" id="usernameInput" aria-describedby="usernameHelp" placeholder="Enter username">
 			<small id="usernameHelp" class="form-text text-muted">The nickname that other users will see</small>
 		</div>
-		<router-link to="/Dashboard">
-			<button @click="onSubmit" type="submit" class="btn btn-success">Play</button>
-        </router-link>
+			<button @click="onSubmit" type="submit" class="btn btn-success" data-dismiss="modal">Play</button>
 	</form>
 </template>
 
 <script>
 import api from "@/api/api";
+import { events } from "commonsettings";
+import router from "@/router/index.js";
 
 export default {
 	name: "CreateUser",
@@ -25,6 +25,10 @@ export default {
 		onSubmit() {
 			// TODO: Call the api
 			api.createUser(this.username);
+			socket.on(events.NEW_USER, user => {
+				state = user;
+			});
+			router.push("Dashboard");
 		}
 	}
 };

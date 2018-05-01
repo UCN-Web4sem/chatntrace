@@ -5,11 +5,15 @@ import App from "./App";
 import router from "./router";
 import CreateUser from "@/components/CreateUser";
 import FrontPageUser from "@/components/FrontpageUser";
+import CreateLobbyModal from "@/components/CreateLobbyModal";
+import CreateLobby from "@/components/CreateLobby";
 
 Vue.config.productionTip = false;
 
 Vue.component("create-user", CreateUser);
-Vue.component("frontpage-user", FrontPageUser)
+Vue.component("frontpage-user", FrontPageUser);
+Vue.component("create-lobby-modal", CreateLobbyModal);
+Vue.component("create-lobby", CreateLobby);
 /* eslint-disable no-new */
 new Vue({
 	el: "#app",
