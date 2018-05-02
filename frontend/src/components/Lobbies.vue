@@ -5,7 +5,7 @@
 		<div class="lobby-list">
 			<strong>Lobbies</strong>
 			<ul class="list-group">
-				<li v-for="lobby in lobbies" :key="lobby.id" v-on:click="joinLobby(lobby)" class="list-group-item">{{ lobby.name }}</li>
+				<li v-for="(lobby,i) in lobbies" :key="lobby.id" v-on:click="joinLobby(i)" class="list-group-item" v-bind:class="{ active: lobbies[i].isActive }">{{ lobby.name }}</li>
 			</ul>
 		</div>
 	</div>
@@ -20,7 +20,7 @@ export default {
 	data() {
 		return {
 			lobbies: [],
-			currentLobby: {}
+			currentLobby: null
 		};
 	},
 	methods: {
@@ -28,17 +28,28 @@ export default {
 			// TODO: Call the api
 			// api.createUser(this.username);
 		},
-		joinLobby: function(lobby) {
-			console.log("noget noget", lobby, "and ", state.user);
-			api.joinLobby(lobby, state.user);
-			currentLobby = lobby;
+		joinLobby: function(i) {
+			if (this.currentLobby != null) {
+				this.currentLobby.isActive = false;
+				api.leaveLobby(this.currentLobby, state.user);
+			}
+			console.log("noget noget", this.lobbies[i], "and ", state.user);
+			api.joinLobby(this.lobbies[i], state.user);
+			let lobby = this.lobbies[i];
+			lobby.isActive = true;
+			this.lobbies[i] = lobby;
+			this.currentLobby = this.lobbies[i];
+			this.$forceUpdate();
 		}
 	},
 	mounted() {
 		socket.on(events.ALL_LOBBIES, lobbies => {
 			this.lobbies = lobbies;
-			console.log(lobbies);
+			this.lobbies.forEach(lobby => {
+				lobby.isActive = false;
+			});
 			socket.on(events.NEW_LOBBY, lobby => {
+				lobby.isActive = false;
 				this.lobbies.push(lobby);
 			});
 		});

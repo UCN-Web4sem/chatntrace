@@ -9,5 +9,8 @@ export default {
 	},
 	joinLobby(lobby, user) {
 		socket.emit(events.JOIN_LOBBY, lobby, user);
+	},
+	leaveLobby(lobby, user) {
+		socket.emit(events.LEAVE_LOBBY, lobby, user);
 	}
 };
