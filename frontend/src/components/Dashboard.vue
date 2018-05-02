@@ -2,7 +2,7 @@
 	<div class="Container">
 		<div class="Left"><lobbies></lobbies></div>
 		<div class="Middle">Game View</div>
-		<div class="Right">Chat View</div>
+		<div class="Right"><chat></chat></div>
 	</div>
 </template>
 
@@ -56,7 +56,7 @@ WebKit inertia scrolling is being added here for any present/future devices that
 }
 /*  Left and Right are set sizes while the Middle is set to flex one so it occupies all remaining space. This could be set as a width too if prefereable, perhaps using calc.*/
 .Left {
-	width: 12.5rem;
+	width: 15%;
 	background-color: red;
 }
 
@@ -66,7 +66,8 @@ WebKit inertia scrolling is being added here for any present/future devices that
 }
 
 .Right {
-	width: 12.5rem;
+	width: 15%;
+	overflow:hidden;
 	background-color: blue;
 }
 </style>

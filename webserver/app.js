@@ -40,12 +40,17 @@ app.use(function(err, req, res, next) {
 });
 
 // TODO: move the following into its own file/module
-let lobbies = [];
+let lobbies = {}; // lobby id -> list<sockets>
+// let sockets = lobbies[lobbyID]
+// sockets.forEach(socket => {
+// 	socket.chat-besked(chat-besked, message.content)
+// });
 
 const events = require("commonsettings").events;
 const bll = require("backend").bll;
 const userFacade = bll.userFacade;
 const lobbyFacade = bll.lobbyFacade;
+const chatMessageFacade = bll.chatMessageFacade;
 
 io.on("connection", socket => {
 	console.log("Got a connection");
@@ -106,6 +111,16 @@ io.on("connection", socket => {
 				lobby,
 				"in the db"
 			);
+		});
+	});
+	socket.on(events.SEND_MESSAGE, (content) => {
+		chatMessageFacade.create(content, err => {
+			if(err) {
+				// TODO: err handling
+				return console.log(err);
+			}
+			let lobby = "TODO";
+			console.log("The message is: ", content, "was displayed in the lobby: ", lobby);
 		});
 	});
 });
