@@ -113,14 +113,27 @@ io.on("connection", socket => {
 			);
 		});
 	});
-	socket.on(events.SEND_MESSAGE, (content) => {
+	socket.on(events.SEND_MESSAGE, content => {
 		chatMessageFacade.create(content, err => {
-			if(err) {
+			if (err) {
 				// TODO: err handling
 				return console.log(err);
 			}
 			let lobby = "TODO";
-			console.log("The message is: ", content, "was displayed in the lobby: ", lobby);
+			console.log(
+				"The message is: ",
+				content,
+				"was displayed in the lobby: ",
+				lobby
+			);
+		});
+	});
+	socket.on("disconnect", (lobby, user) => {
+		console.log("disconnecting user :", user);
+		lobbyFacade.removeUserFromLobby(lobby, user, err => {
+			if (err) {
+				return console.log(err);
+			}
 		});
 	});
 });
