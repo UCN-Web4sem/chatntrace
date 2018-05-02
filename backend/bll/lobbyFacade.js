@@ -26,9 +26,9 @@ module.exports = {
 
 	removeUserFromLobby(lobby, user, cb) {
 		DAL.lobby.removeUserFromLobby(lobby, user, cb);
-  },
-	
-  addMessageToLobby(lobby, message, cb) {
+	},
+
+	addMessageToLobby(lobby, message, cb) {
 		DAL.lobby.addMessageToLobby(lobby, message, cb);
 	}
 };
