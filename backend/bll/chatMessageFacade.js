@@ -9,5 +9,5 @@ module.exports = {
 		DAL.message.create(message, (err, message) => {
 			cb(err, message);
 		});
-}
+	}
 };
