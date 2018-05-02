@@ -4,5 +4,6 @@
 	"ALL_LOBBIES": "all lobbies",
 	"NEW_LOBBY": "new lobby",
 	"JOIN_LOBBY": "join lobby",
-	"NEW_USER": "new user"
+	"NEW_USER": "new user",
+	"SEND_MESSAGE": "send message"
 }

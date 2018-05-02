@@ -17,5 +17,11 @@ module.exports = {
 			.child(lobby.id)
 			.child("users")
 			.set(user, cb);
+	},
+	addMessageToLobby(lobby, message, cb) {
+		db
+			.child(lobby.id)
+			.child("messages")
+			.set(message, cb);
 	}
 };
