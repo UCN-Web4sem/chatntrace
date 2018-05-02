@@ -31,4 +31,31 @@ describe("lobby", function() {
 			});
 		});
 	});
+	describe("#leaveALobby", function() {
+		it("should run without error", function(done) {
+			bll.userFacade.create("TestLeaveALobby", function(err, user) {
+				if (err) {
+					done(err);
+				}
+				bll.lobbyFacade.create("TestLeaveALobby", function(err, lobby) {
+					if (err) {
+						done(err);
+					}
+					bll.lobbyFacade.addUserToLobby(lobby, user, function(err) {
+						console.log(lobby.id);
+						console.log(user.id);
+						if (err) {
+							done(err);
+						}
+						bll.lobbyFacade.removeUserFromLobby(lobby, user, function(err) {
+							if (err) {
+								done(err);
+							}
+							done();
+						});
+					});
+				});
+			});
+		});
+	});
 });

@@ -5,7 +5,7 @@
 		<div class="lobby-list">
 			<strong>Lobbies</strong>
 			<ul class="list-group">
-				<li v-for="lobby in lobbies" :key="lobby.id" class="list-group-item">{{ lobby.name }}</li>
+				<li v-for="lobby in lobbies" :key="lobby.id" v-on:click="joinLobby(lobby)" class="list-group-item" v-bind:class="{ active: lobby.isActive }">{{ lobby.name }}</li>
 			</ul>
 		</div>
 	</div>
@@ -19,20 +19,40 @@ export default {
 	name: "Lobbies",
 	data() {
 		return {
-			lobbies: []
+			lobbies: [],
+			currentLobby: null
 		};
 	},
 	methods: {
 		onSubmit() {
 			// TODO: Call the api
 			// api.createUser(this.username);
+		},
+		joinLobby: function(lobby) {
+			// checks if there is a lobby already joined
+			if (this.currentLobby != null) {
+				this.currentLobby.isActive = false;
+				api.leaveLobby(this.currentLobby, state.user);
+			}
+			console.log("noget noget", lobby, "and ", state.user);
+			// joins the lobby that was clicked on
+			api.joinLobby(lobby, state.user);
+			// gets and sets the lobby that was clicked on to active
+			lobby.isActive = true;
+			// sets the old lobby to inactive
+			this.currentLobby = lobby;
+			// forces vue model to update
+			this.$forceUpdate();
 		}
 	},
 	mounted() {
 		socket.on(events.ALL_LOBBIES, lobbies => {
 			this.lobbies = lobbies;
-			console.log(lobbies);
+			this.lobbies.forEach(lobby => {
+				lobby.isActive = false;
+			});
 			socket.on(events.NEW_LOBBY, lobby => {
+				lobby.isActive = false;
 				this.lobbies.push(lobby);
 			});
 		});

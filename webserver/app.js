@@ -89,7 +89,28 @@ io.on("connection", socket => {
 				// tODO: err handling
 				return console.log(err);
 			}
-			console.log("the user : ", user, "was added to the ", lobby, "in the db");
+			console.log(
+				"the user : ",
+				user,
+				"was added to the ",
+				lobby,
+				"in the db now"
+			);
+		});
+	});
+	socket.on(events.LEAVE_LOBBY, (lobby, user) => {
+		lobbyFacade.removeUserFromLobby(lobby, user, err => {
+			if (err) {
+				// TODO: err handling
+				return console.log(err);
+			}
+			console.log(
+				"the user : ",
+				user,
+				"was removed from the ",
+				lobby,
+				"in the db"
+			);
 		});
 	});
 	socket.on(events.SEND_MESSAGE, (content) => {
