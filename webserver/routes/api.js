@@ -26,5 +26,25 @@ module.exports = function(io) {
 			});
 		});
 
+	router
+		.route("/user")
+		.get(function(req, res, next) {
+			res.json({ error: "not yet implemented" });
+		})
+		.post(jsonParser, function(req, res, next) {
+			const username = req.body.name;
+			userFacade.create(username, (err, usr) => {
+				if (err) {
+					// TODO: err handling
+					return console.log(err);
+				}
+				io.emit(events.NEW_USER, usr); // TODO: should use socket.broadcast.emit and handle update in client
+				console.log("the user", usr, "was saved in the db");
+				// state.user = usr; // TODO: FIX!
+
+				res.json(usr);
+			});
+		});
+
 	return router;
 };
