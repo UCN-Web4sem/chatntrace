@@ -14,7 +14,7 @@ export default {
 	},
 	leaveLobby(lobby, user) {
 		socket.emit(events.LEAVE_LOBBY, lobby, user);
-  },
+	},
 	sendMessage(content) {
 		socket.emit(events.SEND_MESSAGE, content);
 		state.messages.push(content);
