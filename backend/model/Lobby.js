@@ -3,5 +3,6 @@ module.exports = class Lobby {
 		this.id = id;
 		this.name = name;
 		this.users = [];
+		this.messages = [];
 	}
 };
