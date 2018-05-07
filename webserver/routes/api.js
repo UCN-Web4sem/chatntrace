@@ -1,7 +1,9 @@
 module.exports = function(io) {
 	var express = require("express");
 	var router = express.Router();
+	const events = require("commonsettings").events;
 	const bll = require("backend").bll;
+	const jsonParser = require("body-parser").json();
 
 	const lobbyFacade = bll.lobbyFacade;
 
@@ -12,9 +14,15 @@ module.exports = function(io) {
 				res.json(lobbies);
 			});
 		})
-		.post(function(req, res, next) {
-			res.json({
-				error: "Not yet implemented"
+		.post(jsonParser, function(req, res, next) {
+			const lobbyname = req.body.name;
+			lobbyFacade.create(lobbyname, (err, lob) => {
+				if (err) {
+					return console.log(err);
+				}
+				io.emit(events.NEW_LOBBY, lob); // TODO: should use socket.broadcast.emit and handle update in client
+				console.log("the lobby : ", lob, " was created in the db");
+				res.json(lob);
 			});
 		});
 
