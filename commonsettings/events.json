@@ -1,7 +1,6 @@
 {
 	"CREATE_USER": "create user",
 	"CREATE_LOBBY": "create lobby",
-	"ALL_LOBBIES": "all lobbies",
 	"NEW_LOBBY": "new lobby",
 	"JOIN_LOBBY": "join lobby",
 	"NEW_USER": "new user",
