@@ -124,20 +124,19 @@ io.on("connection", socket => {
 			}
 			console.log("EMITTING MSG TO", state.lobby);
 			io.to(state.lobby.id).emit(events.NEW_MESSAGE, message); // TODO: maybe do socket.broadcast.to(state.lobby.id).emit(events.SEND_MESSAGE, message);
-			console.log(
-				"The message is: ",
-				content,
-				"was displayed in the lobby: ",
-			);
+			console.log("The message is: ", content, "was displayed in the lobby: ");
 		});
 	});
-	socket.on("disconnect", (lobby, user) => {
-		console.log("disconnecting user :", user);
-		lobbyFacade.removeUserFromLobby(lobby, user, err => {
-			if (err) {
-				return console.log(err);
-			}
-		});
+	socket.on("disconnect", () => {
+		if (state.lobby == null) {
+			return;
+		} else {
+			lobbyFacade.removeUserFromLobby(state.lobby, state.user, err => {
+				if (err) {
+					return console.log(err);
+				}
+			});
+		}
 	});
 });
 
