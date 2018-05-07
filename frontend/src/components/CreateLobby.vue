@@ -20,7 +20,10 @@ export default {
 	methods: {
 		onSubmit() {
 			// TODO: Call the api
-			api.createLobby(this.lobbyName);
+			api.createLobby(this.lobbyName, (err, newLobby) => {
+				if (err) return console.error(err);
+				console.log("Created lobby", newLobby);
+			});
 		}
 	}
 };

@@ -7,8 +7,16 @@ export default {
 	createUser(username) {
 		socket.emit(events.CREATE_USER, username);
 	},
-	createLobby(lobbyname) {
-		socket.emit(events.CREATE_LOBBY, lobbyname);
+	createLobby(lobbyname, cb) {
+		axios
+			.post("/api/lobby", { name: lobbyname })
+			.then(response => {
+				cb(null, response.data);
+			})
+			.catch(err => {
+				console.error(err);
+				cb(err, null);
+			});
 	},
 	joinLobby(lobby, user) {
 		socket.emit(events.JOIN_LOBBY, lobby, user);

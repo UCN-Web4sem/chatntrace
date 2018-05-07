@@ -66,16 +66,7 @@ io.on("connection", socket => {
 			state.user = usr;
 		});
 	});
-	socket.on(events.CREATE_LOBBY, lobbyname => {
-		lobbyFacade.create(lobbyname, (err, lob) => {
-			if (err) {
-				// TODO: err handling
-				return console.log(err);
-			}
-			io.emit(events.NEW_LOBBY, lob); // TODO: should use socket.broadcast.emit and handle update in client
-			console.log("the lobby : ", lob, " was created in the db");
-		});
-	});
+
 	socket.on(events.JOIN_LOBBY, (lobby, user) => {
 		lobbyFacade.addUserToLobby(lobby, user, err => {
 			if (err) {
