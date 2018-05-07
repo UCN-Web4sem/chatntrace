@@ -10,6 +10,8 @@ import ChatArea from "@/components/ChatArea";
 import ChatForm from "@/components/ChatSendForm";
 import CreateLobbyModal from "@/components/CreateLobbyModal";
 import CreateLobby from "@/components/CreateLobby";
+import Game from "@/components/Game";
+import WordClue from "@/components/WordClue";
 
 Vue.config.productionTip = false;
 
@@ -20,6 +22,8 @@ Vue.component("chat-area", ChatArea);
 Vue.component("chat-form", ChatForm);
 Vue.component("create-lobby-modal", CreateLobbyModal);
 Vue.component("create-lobby", CreateLobby);
+Vue.component("game", Game);
+Vue.component("word-clue", WordClue);
 /* eslint-disable no-new */
 new Vue({
 	el: "#app",

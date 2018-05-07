@@ -1,7 +1,7 @@
 <template>
 	<div class="Container">
 		<div class="Left"><lobbies></lobbies></div>
-		<div class="Middle">Game View</div>
+		<div class="Middle"><game></game></div>
 		<div class="Right"><chat></chat></div>
 	</div>
 </template>
