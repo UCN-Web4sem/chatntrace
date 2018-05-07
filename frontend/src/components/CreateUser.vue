@@ -24,11 +24,11 @@ export default {
 	methods: {
 		onSubmit() {
 			// TODO: Call the api
-			api.createUser(this.username);
-			socket.on(events.NEW_USER, user => {
+			api.createUser(this.username, (err, user) => {
+				if (err) return console.error(err);
 				state.user = user;
+				router.push("Dashboard");
 			});
-			router.push("Dashboard");
 		}
 	}
 };

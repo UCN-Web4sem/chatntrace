@@ -1,4 +1,4 @@
-module.exports = function(io) {
+module.exports = function(io, apiEvents) {
 	var express = require("express");
 	var router = express.Router();
 	const events = require("commonsettings").events;
@@ -6,6 +6,7 @@ module.exports = function(io) {
 	const jsonParser = require("body-parser").json();
 
 	const lobbyFacade = bll.lobbyFacade;
+	const userFacade = bll.userFacade;
 
 	router
 		.route("/lobby")
@@ -33,15 +34,15 @@ module.exports = function(io) {
 		})
 		.post(jsonParser, function(req, res, next) {
 			const username = req.body.name;
+			const socketID = req.body.socketID;
 			userFacade.create(username, (err, usr) => {
 				if (err) {
 					// TODO: err handling
 					return console.log(err);
 				}
 				io.emit(events.NEW_USER, usr); // TODO: should use socket.broadcast.emit and handle update in client
+				apiEvents.emit("create user", socketID, usr);
 				console.log("the user", usr, "was saved in the db");
-				// state.user = usr; // TODO: FIX!
-
 				res.json(usr);
 			});
 		});
