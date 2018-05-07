@@ -39,13 +39,6 @@ app.use(function(err, req, res, next) {
 	res.render("error");
 });
 
-// TODO: move the following into its own file/module
-let lobbies = {}; // lobby id -> list<sockets>
-// let sockets = lobbies[lobbyID]
-// sockets.forEach(socket => {
-// 	socket.chat-besked(chat-besked, message.content)
-// });
-
 const events = require("commonsettings").events;
 const bll = require("backend").bll;
 const userFacade = bll.userFacade;
@@ -54,6 +47,11 @@ const chatMessageFacade = bll.chatMessageFacade;
 
 io.on("connection", socket => {
 	console.log("Got a connection");
+
+	let state = {
+		lobby: null,
+		user: null
+	};
 
 	// Give the socket a list of all the lobbies
 	lobbyFacade.getAll(lobbies => {
@@ -71,6 +69,7 @@ io.on("connection", socket => {
 				socket.emit(events.ALL_LOBBIES, lobbies);
 			});
 			console.log("the user", usr, "was saved in the db");
+			state.user = usr;
 		});
 	});
 	socket.on(events.CREATE_LOBBY, lobbyname => {
@@ -96,6 +95,8 @@ io.on("connection", socket => {
 				lobby,
 				"in the db now"
 			);
+			socket.join(lobby.id);
+			state.lobby = lobby;
 		});
 	});
 	socket.on(events.LEAVE_LOBBY, (lobby, user) => {
@@ -111,16 +112,24 @@ io.on("connection", socket => {
 				lobby,
 				"in the db"
 			);
+			socket.leave(lobby.id);
+			state.lobby = null;
 		});
 	});
-	socket.on(events.SEND_MESSAGE, (content) => {
-		chatMessageFacade.create(content, err => {
-			if(err) {
+	socket.on(events.SEND_MESSAGE, content => {
+		chatMessageFacade.create(content, state.user, (err, message) => {
+			if (err) {
 				// TODO: err handling
 				return console.log(err);
 			}
-			let lobby = "TODO";
-			console.log("The message is: ", content, "was displayed in the lobby: ", lobby);
+			console.log("EMITTING MSG TO", state.lobby);
+			io.to(state.lobby.id).emit(events.NEW_MESSAGE, message); // TODO: maybe do socket.broadcast.to(state.lobby.id).emit(events.SEND_MESSAGE, message);
+			console.log(
+				"The message is: ",
+				content,
+				"was displayed in the lobby: ",
+				state.lobby
+			);
 		});
 	});
 });
