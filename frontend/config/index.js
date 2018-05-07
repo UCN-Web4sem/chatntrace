@@ -4,6 +4,11 @@
 
 const path = require("path");
 
+const targetURL =
+	(process.env.WEB_HOST || "localhost") +
+	":" +
+	(process.env.WEB_PORT || "3000");
+
 module.exports = {
 	dev: {
 		// Paths
@@ -17,23 +22,19 @@ module.exports = {
 			// will point to localhost:3000/socket.io/socket.io.js thus serving the correct file
 			// TODO: REPORT
 			"/socket.io/socket.io.js": {
-				target:
-					"http://" +
-					(process.env.WEB_HOST || "localhost") +
-					":" +
-					(process.env.WEB_PORT || "3000"),
+				target: "http://" + targetURL,
 				changeOrigin: true,
 				pathRewrite: {}
 			},
 			"/socket.io/": {
-				target:
-					"ws://" +
-					(process.env.WEB_HOST || "localhost") +
-					":" +
-					(process.env.WEB_PORT || "3000"),
+				target: "ws://" + targetURL,
 				ws: true,
 				changeOrigin: true,
 				logLevel: "debug"
+			},
+			"/api": {
+				target: "http://" + targetURL,
+				changeOrigin: true
 			}
 		},
 
