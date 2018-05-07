@@ -1,4 +1,5 @@
 import { events } from "commonsettings";
+import axios from "axios";
 
 state.messages = state.messages || [];
 
@@ -18,5 +19,16 @@ export default {
 	sendMessage(content) {
 		socket.emit(events.SEND_MESSAGE, content);
 		state.messages.push(content);
+	},
+
+	getAllLobbies(cb) {
+		axios
+			.get("/api/lobby")
+			.then(response => {
+				cb(response.data);
+			})
+			.catch(err => {
+				console.error(err);
+			});
 	}
 };
