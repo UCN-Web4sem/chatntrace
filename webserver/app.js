@@ -51,6 +51,7 @@ const bll = require("backend").bll;
 const userFacade = bll.userFacade;
 const lobbyFacade = bll.lobbyFacade;
 const chatMessageFacade = bll.chatMessageFacade;
+const wordFacade = bll.wordFacade;
 
 io.on("connection", socket => {
 	console.log("Got a connection");
@@ -122,6 +123,15 @@ io.on("connection", socket => {
 			let lobby = "TODO";
 			console.log("The message is: ", content, "was displayed in the lobby: ", lobby);
 		});
+	});
+	socket.on(events.GET_RANDOM_WORD, () => {
+		wordFacade.getRandom(err => {
+			if(err) {
+				// TODO: err handling
+				return console.log(err);
+			}
+			console.log("No err");
+		})
 	});
 });
 

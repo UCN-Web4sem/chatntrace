@@ -6,5 +6,6 @@
 	"JOIN_LOBBY": "join lobby",
 	"NEW_USER": "new user",
 	"LEAVE_LOBBY": "leave lobby",
-	"SEND_MESSAGE": "send message"
+	"SEND_MESSAGE": "send message",
+	"GET_RANDOM_WORD": "get random word"
 }

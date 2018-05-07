@@ -18,5 +18,8 @@ export default {
 	sendMessage(content) {
 		socket.emit(events.SEND_MESSAGE, content);
 		state.messages.push(content);
+	},
+	getRandomWord() {
+		socket.emit(events.GET_RANDOM_WORD);
 	}
 };
