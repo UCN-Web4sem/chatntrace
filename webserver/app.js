@@ -66,23 +66,12 @@ io.on("connection", socket => {
 		if (state.socketID != socketID) return;
 		state.user = user;
 	});
-
+	apiEvents.on("Create lobby", (socketID, lobby) => {
+		if (state.socketID != socketID) return;
+		joinLobby(lobby, state.user);
+	});
 	socket.on(events.JOIN_LOBBY, (lobby, user) => {
-		lobbyFacade.addUserToLobby(lobby, user, err => {
-			if (err) {
-				// tODO: err handling
-				return console.log(err);
-			}
-			console.log(
-				"the user : ",
-				user,
-				"was added to the ",
-				lobby,
-				"in the db now"
-			);
-			socket.join(lobby.id);
-			state.lobby = lobby;
-		});
+		joinLobby(lobby, user);
 	});
 	socket.on(events.LEAVE_LOBBY, (lobby, user) => {
 		lobbyFacade.removeUserFromLobby(lobby, user, err => {
@@ -109,14 +98,37 @@ io.on("connection", socket => {
 			}
 			console.log("EMITTING MSG TO", state.lobby);
 			io.to(state.lobby.id).emit(events.NEW_MESSAGE, message); // TODO: maybe do socket.broadcast.to(state.lobby.id).emit(events.SEND_MESSAGE, message);
-			console.log(
-				"The message is: ",
-				content,
-				"was displayed in the lobby: ",
-				state.lobby
-			);
+			console.log("The message is: ", content, "was displayed in the lobby: ");
 		});
 	});
+	socket.on("disconnect", () => {
+		if (state.lobby == null) {
+			return;
+		} else {
+			lobbyFacade.removeUserFromLobby(state.lobby, state.user, err => {
+				if (err) {
+					return console.log(err);
+				}
+			});
+		}
+	});
+	function joinLobby(lobby, user) {
+		lobbyFacade.addUserToLobby(lobby, user, err => {
+			if (err) {
+				// tODO: err handling
+				return console.log(err);
+			}
+			console.log(
+				"the user : ",
+				user,
+				"was added to the ",
+				lobby,
+				"in the db now"
+			);
+			socket.join(lobby.id);
+			state.lobby = lobby;
+		});
+	}
 });
 
 module.exports = app;
