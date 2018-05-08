@@ -1,7 +1,7 @@
 <template>
 	<div class="Container">
 		<div class="Left"><lobbies></lobbies></div>
-		<div class="Middle">Game View</div>
+		<div class="Middle"><game-view></game-view></div>
 		<div class="Right"><chat></chat></div>
 	</div>
 </template>
@@ -10,8 +10,10 @@
 import api from "@/api/api";
 import Vue from "vue";
 import Lobbies from "@/components/Lobbies";
+import GameView from "@/components/GameView";
 
 Vue.component("lobbies", Lobbies);
+Vue.component("game-view", GameView);
 
 export default {
 	name: "Dashboard",
@@ -63,11 +65,12 @@ WebKit inertia scrolling is being added here for any present/future devices that
 .Middle {
 	flex: 1;
 	background-color: green;
+	overflow: hidden;
 }
 
 .Right {
 	width: 15%;
-	overflow:hidden;
+	overflow: hidden;
 	background-color: blue;
 }
 </style>
