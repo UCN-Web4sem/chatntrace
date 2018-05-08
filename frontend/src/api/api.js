@@ -3,6 +3,7 @@ import axios from "axios";
 import v4 from "uuid/v4";
 
 state.messages = state.messages || [];
+state.joinedLobby = state.joinedLobby || {};
 
 export default {
 	setInitialID() {
