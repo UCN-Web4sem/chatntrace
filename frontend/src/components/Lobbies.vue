@@ -46,11 +46,8 @@ export default {
 		}
 	},
 	mounted() {
-		socket.on(events.ALL_LOBBIES, lobbies => {
+		api.getAllLobbies(lobbies => {
 			this.lobbies = lobbies;
-			this.lobbies.forEach(lobby => {
-				lobby.isActive = false;
-			});
 			socket.on(events.NEW_LOBBY, lobby => {
 				lobby.isActive = false;
 				this.lobbies.push(lobby);

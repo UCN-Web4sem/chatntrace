@@ -5,6 +5,10 @@
 </template>
 
 <script>
+import api from "@/api/api";
+
+api.setInitialID();
+
 export default {
 	name: "App"
 };

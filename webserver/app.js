@@ -3,13 +3,18 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const EventEmitter = require("events");
 
 var app = express();
 var io = require("socket.io")();
 // TODO: REPORT
 app.io = io; // see https://stackoverflow.com/a/28325154
 
+class ApiEventEmitter extends EventEmitter {}
+const apiEvents = new ApiEventEmitter();
+
 var indexRouter = require("./routes/index")(io);
+var apiRouter = require("./routes/api")(io, apiEvents);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -22,6 +27,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
+app.use("/api", apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -49,39 +55,18 @@ io.on("connection", socket => {
 	console.log("Got a connection");
 
 	let state = {
+		socketID: null,
 		lobby: null,
 		user: null
 	};
 
-	// Give the socket a list of all the lobbies
-	lobbyFacade.getAll(lobbies => {
-		socket.emit(events.ALL_LOBBIES, lobbies);
+	socket.on(events.INITIAL_ID, id => (state.socketID = id));
+
+	apiEvents.on("create user", (socketID, user) => {
+		if (state.socketID != socketID) return;
+		state.user = user;
 	});
 
-	socket.on(events.CREATE_USER, username => {
-		userFacade.create(username, (err, usr) => {
-			if (err) {
-				// TODO: err handling
-				return console.log(err);
-			}
-			io.emit(events.NEW_USER, usr); // TODO: should use socket.broadcast.emit and handle update in client
-			lobbyFacade.getAll(lobbies => {
-				socket.emit(events.ALL_LOBBIES, lobbies);
-			});
-			console.log("the user", usr, "was saved in the db");
-			state.user = usr;
-		});
-	});
-	socket.on(events.CREATE_LOBBY, lobbyname => {
-		lobbyFacade.create(lobbyname, (err, lob) => {
-			if (err) {
-				// TODO: err handling
-				return console.log(err);
-			}
-			io.emit(events.NEW_LOBBY, lob); // TODO: should use socket.broadcast.emit and handle update in client
-			console.log("the lobby : ", lob, " was created in the db");
-		});
-	});
 	socket.on(events.JOIN_LOBBY, (lobby, user) => {
 		lobbyFacade.addUserToLobby(lobby, user, err => {
 			if (err) {
