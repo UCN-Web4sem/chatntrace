@@ -28,7 +28,7 @@ export default {
 	},
 	createLobby(lobbyname, cb) {
 		axios
-			.post("/api/lobby", { name: lobbyname })
+			.post("/api/lobby", { name: lobbyname, socketID: state.socketID })
 			.then(response => {
 				cb(null, response.data);
 			})

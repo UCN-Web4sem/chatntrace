@@ -17,12 +17,14 @@ module.exports = function(io, apiEvents) {
 		})
 		.post(jsonParser, function(req, res, next) {
 			const lobbyname = req.body.name;
+			const socketID = req.body.socketID;
 			lobbyFacade.create(lobbyname, (err, lob) => {
 				if (err) {
 					return console.log(err);
 				}
 				io.emit(events.NEW_LOBBY, lob); // TODO: should use socket.broadcast.emit and handle update in client
 				console.log("the lobby : ", lob, " was created in the db");
+				apiEvents.emit("Create lobby", socketID, lob);
 				res.json(lob);
 			});
 		});
