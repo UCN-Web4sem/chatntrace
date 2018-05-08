@@ -80,24 +80,11 @@ io.on("connection", socket => {
 			}
 			io.emit(events.NEW_LOBBY, lob); // TODO: should use socket.broadcast.emit and handle update in client
 			console.log("the lobby : ", lob, " was created in the db");
+			joinLobby(lob, state.user);
 		});
 	});
 	socket.on(events.JOIN_LOBBY, (lobby, user) => {
-		lobbyFacade.addUserToLobby(lobby, user, err => {
-			if (err) {
-				// tODO: err handling
-				return console.log(err);
-			}
-			console.log(
-				"the user : ",
-				user,
-				"was added to the ",
-				lobby,
-				"in the db now"
-			);
-			socket.join(lobby.id);
-			state.lobby = lobby;
-		});
+		joinLobby(lobby, user);
 	});
 	socket.on(events.LEAVE_LOBBY, (lobby, user) => {
 		lobbyFacade.removeUserFromLobby(lobby, user, err => {
@@ -138,6 +125,23 @@ io.on("connection", socket => {
 			});
 		}
 	});
+	function joinLobby(lobby, user) {
+		lobbyFacade.addUserToLobby(lobby, user, err => {
+			if (err) {
+				// tODO: err handling
+				return console.log(err);
+			}
+			console.log(
+				"the user : ",
+				user,
+				"was added to the ",
+				lobby,
+				"in the db now"
+			);
+			socket.join(lobby.id);
+			state.lobby = lobby;
+		});
+	}
 });
 
 module.exports = app;
