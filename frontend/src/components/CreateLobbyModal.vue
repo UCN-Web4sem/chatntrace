@@ -25,7 +25,6 @@ export default {
 	},
 	methods: {
 		joinLobby: function(lobby) {
-			console.log("NOGET PLEASE", lobby);
 			this.$emit("createdLobbyEventParent", lobby);
 		},
 		onSubmit() {}
