@@ -51,14 +51,19 @@ export default {
 			let isDrawing = false;
 			let points = [];
 
-			c.onmousedown = e => {
+			const onmousedown = point => {
 				isDrawing = true;
-				points.push(newPoint(e));
+				points.push(point);
 			};
-			c.onmousemove = e => {
-				if (!isDrawing) return;
-				points.push(newPoint(e));
+			socket.on("game: onmousedown", onmousedown);
+			c.onmousedown = e => {
+				const p = newPoint(e);
+				onmousedown(p);
+				socket.emit("game: onmousedown", p);
+			};
 
+			const onmousemove = point => {
+				points.push(point);
 				for (var i = 1; i < points.length; i++) {
 					const prev = points[i - 1];
 					const next = points[i];
@@ -70,9 +75,22 @@ export default {
 					ctx.stroke();
 				}
 			};
-			c.onmouseup = () => {
+			socket.on("game: onmousemove", onmousemove);
+			c.onmousemove = e => {
+				if (!isDrawing) return;
+				const p = newPoint(e);
+				onmousemove(p);
+				socket.emit("game: onmousemove", p);
+			};
+
+			const onmouseup = () => {
 				isDrawing = false;
 				points = [];
+			};
+			socket.on("game: onmouseup", onmouseup);
+			c.onmouseup = () => {
+				onmouseup();
+				socket.emit("game: onmouseup");
 			};
 		})();
 	}
