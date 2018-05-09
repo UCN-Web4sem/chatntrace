@@ -117,6 +117,17 @@ io.on("connection", socket => {
 			);
 		});
 	});
+
+	// GAME EVENTS
+	socket.on(events.GAME_ON_MOUSE_DOWN, point => {
+		socket.broadcast.emit(events.GAME_ON_MOUSE_DOWN, point);
+	});
+	socket.on(events.GAME_ON_MOUSE_MOVE, point => {
+		socket.broadcast.emit(events.GAME_ON_MOUSE_MOVE, point);
+	});
+	socket.on(events.GAME_ON_MOUSE_UP, () => {
+		socket.broadcast.emit(events.GAME_ON_MOUSE_UP);
+	});
 });
 
 module.exports = app;
