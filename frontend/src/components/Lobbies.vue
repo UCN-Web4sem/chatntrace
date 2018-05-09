@@ -34,12 +34,6 @@ export default {
 				this.currentLobby.isActive = false;
 				api.leaveLobby(this.currentLobby, state.user);
 			}
-			if (typeof lobby === "function") {
-				lobby = lobby();
-				console.log("this is a function", lobby);
-			} else {
-				console.log("this isnt a function", lobby);
-			}
 			// joins the lobby that was clicked on
 			api.joinLobby(lobby, state.user);
 			// gets and sets the lobby that was clicked on to active
