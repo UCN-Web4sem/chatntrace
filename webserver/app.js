@@ -52,6 +52,14 @@ const lobbyFacade = bll.lobbyFacade;
 const chatMessageFacade = bll.chatMessageFacade;
 
 let lobbyJoinedOrLeft = {};
+lobbyFacade.getAll(lobbies => {
+	lobbies.forEach(lobby => {
+		lobbyJoinedOrLeft[lobby.id] = {
+			joined: 0,
+			left: 0
+		};
+	});
+});
 
 io.on("connection", socket => {
 	console.log("Got a connection");
