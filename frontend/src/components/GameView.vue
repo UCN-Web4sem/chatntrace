@@ -6,39 +6,75 @@
 
 <script>
 import api from "@/api/api";
+import { events } from "commonsettings";
 import Vue from "vue";
 
 export default {
 	name: "GameView",
 	data() {
-		return {};
+		return {
+			word: "Secret",
+			timeLeftOfRound: 60
+		};
+	},
+	computed: {
+		underscoredWord: function() {
+			return this.word.replace(/[a-zA-z]/g, "_ "); //.split("_ ");
+		}
 	},
 	methods: {},
 	mounted() {
-		const c = document.getElementById("game-canvas");
+		// Setup canvas drawing
+		(() => {
+			const randInt = (min, max) =>
+				Math.floor(Math.random() * (max - min + 1)) + min;
 
-		c.style.width = "100%";
-		c.style.height = "100%";
-		c.width = c.offsetWidth;
-		c.height = c.offsetHeight;
+			const c = document.getElementById("game-canvas");
+			const newPoint = e => {
+				return {
+					// Because the canvas is in the middle we have to remove the offset
+					x: e.clientX - c.offsetLeft,
+					y: e.clientY - c.offsetTop,
+					width: randInt(3, 5)
+				};
+			};
 
-		const ctx = c.getContext("2d");
+			c.style.width = "100%";
+			c.style.height = "100%";
+			c.width = c.offsetWidth;
+			c.height = c.offsetHeight;
 
-		let i = 0;
-		setInterval(() => {
-			ctx.font = "48px serif";
-			ctx.fillText(
-				"Hello Canvas",
-				Math.random() * (250 + i),
-				Math.random() * (250 + i)
-			);
-			i += 100;
-		}, 1000 / 12);
+			const ctx = c.getContext("2d");
 
-		setInterval(() => {
-			ctx.clearRect(0, 0, c.width, c.height);
-			i = 0;
-		}, 1000);
+			ctx.lineJoin = ctx.lineCap = "round";
+
+			let isDrawing = false;
+			let points = [];
+
+			c.onmousedown = e => {
+				isDrawing = true;
+				points.push(newPoint(e));
+			};
+			c.onmousemove = e => {
+				if (!isDrawing) return;
+				points.push(newPoint(e));
+
+				for (var i = 1; i < points.length; i++) {
+					const prev = points[i - 1];
+					const next = points[i];
+
+					ctx.beginPath();
+					ctx.moveTo(prev.x, prev.y);
+					ctx.lineWidth = points[i].width;
+					ctx.lineTo(next.x, next.y);
+					ctx.stroke();
+				}
+			};
+			c.onmouseup = () => {
+				isDrawing = false;
+				points = [];
+			};
+		})();
 	}
 };
 </script>
