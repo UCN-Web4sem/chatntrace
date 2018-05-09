@@ -39,14 +39,25 @@ export default {
 				};
 			};
 
-			c.style.width = "100%";
-			c.style.height = "100%";
-			c.width = c.offsetWidth;
-			c.height = c.offsetHeight;
-
 			const ctx = c.getContext("2d");
 
+			let oldWidth = c.width;
+			let oldHeight = c.height;
+			const resizeCanvas = () => {
+				const imgData = ctx.getImageData(0, 0, oldWidth, oldHeight);
+				c.style.width = "100%";
+				c.style.height = "100%";
+				oldWidth = c.width = c.offsetWidth;
+				oldHeight = c.height = c.offsetHeight;
+
+				ctx.putImageData(imgData, 0, 0);
+			};
+			resizeCanvas();
+			window.addEventListener("resize", resizeCanvas, false);
+
 			ctx.lineJoin = ctx.lineCap = "round";
+
+			ctx.strokeStyle = "black";
 
 			let isDrawing = false;
 			let points = [];
