@@ -26,11 +26,23 @@ module.exports = {
 			.child("users")
 			.child(user.id)
 			.remove(cb);
-  },
+	},
 	addMessageToLobby(lobby, message, cb) {
 		db
 			.child(lobby.id)
 			.child("messages")
 			.set(message, cb);
+	},
+	deleteLobby(lobby) {
+		db
+			.child(lobby.id)
+			.remove()
+			.then(function() {
+				console.log("Success");
+			})
+			.catch(function(err) {
+				// TODO err handlnig
+				console.log(err);
+			});
 	}
 };

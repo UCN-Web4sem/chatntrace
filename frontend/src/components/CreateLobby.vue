@@ -22,7 +22,6 @@ export default {
 			// TODO: Call the api
 			api.createLobby(this.lobbyName, (err, newLobby) => {
 				if (err) return console.error(err);
-				console.log("Created lobby", newLobby);
 				this.$emit("createdLobbyEvent", newLobby);
 			});
 		}

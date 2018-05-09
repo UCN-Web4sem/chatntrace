@@ -30,5 +30,8 @@ module.exports = {
 
 	addMessageToLobby(lobby, message, cb) {
 		DAL.lobby.addMessageToLobby(lobby, message, cb);
+	},
+	deleteLobby(lobby) {
+		DAL.lobby.deleteLobby(lobby);
 	}
 };

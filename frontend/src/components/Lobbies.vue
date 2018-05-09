@@ -51,6 +51,16 @@ export default {
 			socket.on(events.NEW_LOBBY, lobby => {
 				this.lobbies.push(lobby);
 			});
+			socket.on(events.DELETE_LOBBY, lobby => {
+				for (let i = 0; i < lobbies.length; i++) {
+					console.log(lobbies[i].id, lobby.id);
+					if (lobbies[i].id === lobby.id) {
+						console.log(i);
+						this.lobbies.splice(i, 1);
+						break;
+					}
+				}
+			});
 		});
 	}
 };
