@@ -34,16 +34,16 @@ export default {
 				this.currentLobby.isActive = false;
 				api.leaveLobby(this.currentLobby, state.user);
 			}
-			// joins the lobby that was clicked on
-			api.joinLobby(lobby, state.user);
-			// gets and sets the lobby that was clicked on to active
-			lobby.isActive = true;
 			if (typeof lobby === "function") {
 				lobby = lobby();
 				console.log("this is a function", lobby);
 			} else {
 				console.log("this isnt a function", lobby);
 			}
+			// joins the lobby that was clicked on
+			api.joinLobby(lobby, state.user);
+			// gets and sets the lobby that was clicked on to active
+			lobby.isActive = true;
 			// sets the old lobby to inactive
 			this.currentLobby = lobby;
 			// forces vue model to update
