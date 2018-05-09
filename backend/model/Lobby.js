@@ -4,7 +4,5 @@ module.exports = class Lobby {
 		this.name = name;
 		this.users = [];
 		this.messages = [];
-		this.joined = 0;
-		this.left = 0;
 	}
 };
