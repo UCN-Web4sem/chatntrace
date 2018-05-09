@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<create-lobby-modal></create-lobby-modal>
+		<create-lobby-modal  @createdLobbyEventParent="joinLobby($event)" ></create-lobby-modal>
 		<button class="btn btn-success btn-lg" type="button" data-toggle="modal" data-target="#CreateLobbyModal">Create a new lobby</button>
 		<div class="lobby-list">
 			<strong>Lobbies</strong>
@@ -34,7 +34,6 @@ export default {
 				this.currentLobby.isActive = false;
 				api.leaveLobby(this.currentLobby, state.user);
 			}
-			console.log("noget noget", lobby, "and ", state.user);
 			// joins the lobby that was clicked on
 			api.joinLobby(lobby, state.user);
 			// gets and sets the lobby that was clicked on to active
@@ -42,6 +41,7 @@ export default {
 			// sets the old lobby to inactive
 			this.currentLobby = lobby;
 			// forces vue model to update
+
 			this.$forceUpdate();
 		}
 	},
@@ -49,8 +49,17 @@ export default {
 		api.getAllLobbies(lobbies => {
 			this.lobbies = lobbies;
 			socket.on(events.NEW_LOBBY, lobby => {
-				lobby.isActive = false;
 				this.lobbies.push(lobby);
+			});
+			socket.on(events.DELETE_LOBBY, lobby => {
+				for (let i = 0; i < lobbies.length; i++) {
+					console.log(lobbies[i].id, lobby.id);
+					if (lobbies[i].id === lobby.id) {
+						console.log(i);
+						this.lobbies.splice(i, 1);
+						break;
+					}
+				}
 			});
 		});
 	}

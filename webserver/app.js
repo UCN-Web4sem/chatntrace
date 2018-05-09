@@ -51,6 +51,8 @@ const userFacade = bll.userFacade;
 const lobbyFacade = bll.lobbyFacade;
 const chatMessageFacade = bll.chatMessageFacade;
 
+let lobbyJoinedOrLeft = {};
+
 io.on("connection", socket => {
 	console.log("Got a connection");
 
@@ -66,40 +68,18 @@ io.on("connection", socket => {
 		if (state.socketID != socketID) return;
 		state.user = user;
 	});
-
+	apiEvents.on("Create lobby", (socketID, lobby) => {
+		if (state.socketID != socketID) return;
+		lobbyJoinedOrLeft[lobby.id] = {
+			joined: 0,
+			left: 0
+		};
+	});
 	socket.on(events.JOIN_LOBBY, (lobby, user) => {
-		lobbyFacade.addUserToLobby(lobby, user, err => {
-			if (err) {
-				// tODO: err handling
-				return console.log(err);
-			}
-			console.log(
-				"the user : ",
-				user,
-				"was added to the ",
-				lobby,
-				"in the db now"
-			);
-			socket.join(lobby.id);
-			state.lobby = lobby;
-		});
+		joinLobby(lobby, user);
 	});
 	socket.on(events.LEAVE_LOBBY, (lobby, user) => {
-		lobbyFacade.removeUserFromLobby(lobby, user, err => {
-			if (err) {
-				// TODO: err handling
-				return console.log(err);
-			}
-			console.log(
-				"the user : ",
-				user,
-				"was removed from the ",
-				lobby,
-				"in the db"
-			);
-			socket.leave(lobby.id);
-			state.lobby = null;
-		});
+		leaveLobby(lobby, user);
 	});
 	socket.on(events.SEND_MESSAGE, content => {
 		chatMessageFacade.create(content, state.user, (err, message) => {
@@ -107,16 +87,48 @@ io.on("connection", socket => {
 				// TODO: err handling
 				return console.log(err);
 			}
-			console.log("EMITTING MSG TO", state.lobby);
 			io.to(state.lobby.id).emit(events.NEW_MESSAGE, message); // TODO: maybe do socket.broadcast.to(state.lobby.id).emit(events.SEND_MESSAGE, message);
-			console.log(
-				"The message is: ",
-				content,
-				"was displayed in the lobby: ",
-				state.lobby
-			);
 		});
 	});
+	socket.on("disconnect", () => {
+		console.log("A user disconnected");
+		if (state.lobby == null) {
+			return;
+		} else {
+			leaveLobby(state.lobby, state.user);
+		}
+	});
+	function joinLobby(lobby, user) {
+		lobbyFacade.addUserToLobby(lobby, user, err => {
+			if (err) {
+				// tODO: err handling
+				return console.log(err);
+			}
+			socket.join(lobby.id);
+			lobbyJoinedOrLeft[lobby.id].joined += 1;
+			state.lobby = lobby;
+		});
+	}
+
+	function leaveLobby(lobby, user) {
+		lobbyFacade.removeUserFromLobby(lobby, user, err => {
+			if (err) {
+				// TODO: err handling
+				return console.log(err);
+			}
+			lobbyJoinedOrLeft[lobby.id].left += 1;
+			socket.leave(lobby.id);
+			lobby.lobby = null;
+			if (
+				lobbyJoinedOrLeft[lobby.id].joined > 0 &&
+				lobbyJoinedOrLeft[lobby.id].joined == lobbyJoinedOrLeft[lobby.id].left
+			) {
+				lobbyFacade.deleteLobby(lobby);
+				socket.emit(events.DELETE_LOBBY, lobby);
+				delete lobbyJoinedOrLeft[lobby.id];
+			}
+		});
+  }
 
 	// GAME EVENTS
 	socket.on(events.GAME_ON_MOUSE_DOWN, point => {

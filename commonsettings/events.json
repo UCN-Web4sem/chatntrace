@@ -7,8 +7,9 @@
 	"LEAVE_LOBBY": "leave lobby",
 	"SEND_MESSAGE": "send message",
 	"NEW_MESSAGE": "new message",
-
-	"GAME_ON_MOUSE_DOWN": "game: onmousedown",
+	"DELETE_LOBBY": "delete lobby",
+  
+  "GAME_ON_MOUSE_DOWN": "game: onmousedown",
 	"GAME_ON_MOUSE_MOVE": "game: onmousemove",
 	"GAME_ON_MOUSE_UP": "game: onmouseup"
 }
