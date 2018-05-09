@@ -90,9 +90,6 @@ io.on("connection", socket => {
 			io.to(state.lobby.id).emit(events.NEW_MESSAGE, message); // TODO: maybe do socket.broadcast.to(state.lobby.id).emit(events.SEND_MESSAGE, message);
 		});
 	});
-	socket.on(events.DELETE_LOBBY, lobby => {
-		delete lobbyJoinedOrLeft[lobby.id];
-	});
 	socket.on("disconnect", () => {
 		console.log("A user disconnected");
 		if (state.lobby == null) {
@@ -127,6 +124,8 @@ io.on("connection", socket => {
 				lobbyJoinedOrLeft[lobby.id].joined == lobbyJoinedOrLeft[lobby.id].left
 			) {
 				lobbyFacade.deleteLobby(lobby);
+				socket.emit(events.DELETE_LOBBY, lobby);
+				delete lobbyJoinedOrLeft[lobby.id];
 			}
 		});
 	}
