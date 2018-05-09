@@ -128,7 +128,7 @@ io.on("connection", socket => {
 				delete lobbyJoinedOrLeft[lobby.id];
 			}
 		});
-  }
+	}
 
 	// GAME EVENTS
 	socket.on(events.GAME_ON_MOUSE_DOWN, point => {
