@@ -51,7 +51,7 @@ const userFacade = bll.userFacade;
 const lobbyFacade = bll.lobbyFacade;
 const chatMessageFacade = bll.chatMessageFacade;
 
-let joinedOrLeftObject = {};
+let lobbyJoinedOrLeft = {};
 
 io.on("connection", socket => {
 	console.log("Got a connection");
@@ -70,11 +70,11 @@ io.on("connection", socket => {
 	});
 	apiEvents.on("Create lobby", (socketID, lobby) => {
 		if (state.socketID != socketID) return;
-		joinedOrLeftObject[lobby.id] = {
+		lobbyJoinedOrLeft[lobby.id] = {
 			joined: 0,
 			left: 0
 		};
-		console.log("We created this: ", joinedOrLeftObject[lobby.id]);
+		console.log("We created this: ", lobbyJoinedOrLeft[lobby.id]);
 	});
 	socket.on(events.JOIN_LOBBY, (lobby, user) => {
 		console.log(lobby, user);
@@ -93,15 +93,15 @@ io.on("connection", socket => {
 				lobby,
 				"in the db",
 				"Users left = ",
-				joinedOrLeftObject[lobby.id]
+				lobbyJoinedOrLeft[lobby.id]
 			);
-			joinedOrLeftObject[lobby.id].left += 1;
+			lobbyJoinedOrLeft[lobby.id].left += 1;
 			socket.leave(lobby.id);
 			lobby.lobby = null;
-			console.log("Users left = ", joinedOrLeftObject[lobby.id]);
+			console.log("Users left = ", lobbyJoinedOrLeft[lobby.id]);
 			if (
-				joinedOrLeftObject[lobby.id].joined > 0 &&
-				joinedOrLeftObject[lobby.id].joined == joinedOrLeftObject[lobby.id].left
+				lobbyJoinedOrLeft[lobby.id].joined > 0 &&
+				lobbyJoinedOrLeft[lobby.id].joined == lobbyJoinedOrLeft[lobby.id].left
 			) {
 				lobbyFacade.deleteLobby(lobby);
 			}
@@ -119,7 +119,7 @@ io.on("connection", socket => {
 		});
 	});
 	socket.on(events.DELETE_LOBBY, lobby => {
-		delete joinedOrLeftObject[lobby.id];
+		delete lobbyJoinedOrLeft[lobby.id];
 	});
 	socket.on("disconnect", () => {
 		if (state.lobby == null) {
@@ -145,11 +145,11 @@ io.on("connection", socket => {
 				lobby,
 				"in the db now ",
 				"Users joined = ",
-				joinedOrLeftObject[lobby.id]
+				lobbyJoinedOrLeft[lobby.id]
 			);
 			socket.join(lobby.id);
-			joinedOrLeftObject[lobby.id].joined += 1;
-			console.log("Users joined = ", joinedOrLeftObject[lobby.id]);
+			lobbyJoinedOrLeft[lobby.id].joined += 1;
+			console.log("Users joined = ", lobbyJoinedOrLeft[lobby.id]);
 			state.lobby = lobby;
 		});
 	}
