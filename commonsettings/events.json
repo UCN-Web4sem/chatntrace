@@ -6,5 +6,6 @@
 	"NEW_USER": "new user",
 	"LEAVE_LOBBY": "leave lobby",
 	"SEND_MESSAGE": "send message",
-	"NEW_MESSAGE": "new message"
+	"NEW_MESSAGE": "new message",
+	"DELETE_LOBBY": "delete lobby"
 }

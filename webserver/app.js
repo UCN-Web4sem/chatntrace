@@ -51,6 +51,8 @@ const userFacade = bll.userFacade;
 const lobbyFacade = bll.lobbyFacade;
 const chatMessageFacade = bll.chatMessageFacade;
 
+let joinedOrLeftObject = {};
+
 io.on("connection", socket => {
 	console.log("Got a connection");
 
@@ -68,6 +70,11 @@ io.on("connection", socket => {
 	});
 	apiEvents.on("Create lobby", (socketID, lobby) => {
 		if (state.socketID != socketID) return;
+		joinedOrLeftObject[lobby.id] = {
+			joined: 0,
+			left: 0
+		};
+		console.log("We created this: ", joinedOrLeftObject[lobby.id]);
 		joinLobby(lobby, state.user);
 	});
 	socket.on(events.JOIN_LOBBY, (lobby, user) => {
@@ -84,10 +91,20 @@ io.on("connection", socket => {
 				user,
 				"was removed from the ",
 				lobby,
-				"in the db"
+				"in the db",
+				"Users left = ",
+				joinedOrLeftObject[lobby.id]
 			);
+			joinedOrLeftObject[lobby.id].left += 1;
 			socket.leave(lobby.id);
-			state.lobby = null;
+			lobby.lobby = null;
+			console.log("Users left = ", joinedOrLeftObject[lobby.id]);
+			if (
+				joinedOrLeftObject[lobby.id].joined > 0 &&
+				joinedOrLeftObject[lobby.id].joined == joinedOrLeftObject[lobby.id].left
+			) {
+				lobbyFacade.deleteLobby(lobby);
+			}
 		});
 	});
 	socket.on(events.SEND_MESSAGE, content => {
@@ -100,6 +117,9 @@ io.on("connection", socket => {
 			io.to(state.lobby.id).emit(events.NEW_MESSAGE, message); // TODO: maybe do socket.broadcast.to(state.lobby.id).emit(events.SEND_MESSAGE, message);
 			console.log("The message is: ", content, "was displayed in the lobby: ");
 		});
+	});
+	socket.on(events.DELETE_LOBBY, lobby => {
+		delete joinedOrLeftObject[lobby.id];
 	});
 	socket.on("disconnect", () => {
 		if (state.lobby == null) {
@@ -123,9 +143,13 @@ io.on("connection", socket => {
 				user,
 				"was added to the ",
 				lobby,
-				"in the db now"
+				"in the db now ",
+				"Users joined = ",
+				joinedOrLeftObject[lobby.id]
 			);
 			socket.join(lobby.id);
+			joinedOrLeftObject[lobby.id].joined += 1;
+			console.log("Users joined = ", joinedOrLeftObject[lobby.id]);
 			state.lobby = lobby;
 		});
 	}
