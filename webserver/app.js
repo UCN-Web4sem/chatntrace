@@ -75,9 +75,9 @@ io.on("connection", socket => {
 			left: 0
 		};
 		console.log("We created this: ", joinedOrLeftObject[lobby.id]);
-		joinLobby(lobby, state.user);
 	});
 	socket.on(events.JOIN_LOBBY, (lobby, user) => {
+		console.log(lobby, user);
 		joinLobby(lobby, user);
 	});
 	socket.on(events.LEAVE_LOBBY, (lobby, user) => {

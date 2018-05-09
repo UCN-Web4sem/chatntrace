@@ -9,7 +9,7 @@
                         <span aria-hidden="true">&times;</span>
                     </div>
                     <div class="modal-body">
-                        <create-lobby></create-lobby>
+                        <create-lobby @createdLobbyEvent="joinLobby($event)"></create-lobby>
                     </div>
                 </div>
             </div>
@@ -24,6 +24,9 @@ export default {
 		return {};
 	},
 	methods: {
+		joinLobby: function(lobby) {
+			this.$emit("createdLobbyEventParent", lobby);
+		},
 		onSubmit() {}
 	}
 };
