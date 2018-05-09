@@ -68,7 +68,6 @@ io.on("connection", socket => {
 	});
 	apiEvents.on("Create lobby", (socketID, lobby) => {
 		if (state.socketID != socketID) return;
-		//joinLobby(lobby, state.user);
 	});
 	socket.on(events.JOIN_LOBBY, (lobby, user) => {
 		console.log(lobby, user);
