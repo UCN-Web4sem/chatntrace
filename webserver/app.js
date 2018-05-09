@@ -74,38 +74,12 @@ io.on("connection", socket => {
 			joined: 0,
 			left: 0
 		};
-		console.log("We created this: ", lobbyJoinedOrLeft[lobby.id]);
 	});
 	socket.on(events.JOIN_LOBBY, (lobby, user) => {
-		console.log(lobby, user);
 		joinLobby(lobby, user);
 	});
 	socket.on(events.LEAVE_LOBBY, (lobby, user) => {
-		lobbyFacade.removeUserFromLobby(lobby, user, err => {
-			if (err) {
-				// TODO: err handling
-				return console.log(err);
-			}
-			console.log(
-				"the user : ",
-				user,
-				"was removed from the ",
-				lobby,
-				"in the db",
-				"Users left = ",
-				lobbyJoinedOrLeft[lobby.id]
-			);
-			lobbyJoinedOrLeft[lobby.id].left += 1;
-			socket.leave(lobby.id);
-			lobby.lobby = null;
-			console.log("Users left = ", lobbyJoinedOrLeft[lobby.id]);
-			if (
-				lobbyJoinedOrLeft[lobby.id].joined > 0 &&
-				lobbyJoinedOrLeft[lobby.id].joined == lobbyJoinedOrLeft[lobby.id].left
-			) {
-				lobbyFacade.deleteLobby(lobby);
-			}
-		});
+		leaveLobby(lobby, user);
 	});
 	socket.on(events.SEND_MESSAGE, content => {
 		chatMessageFacade.create(content, state.user, (err, message) => {
@@ -113,23 +87,18 @@ io.on("connection", socket => {
 				// TODO: err handling
 				return console.log(err);
 			}
-			console.log("EMITTING MSG TO", state.lobby);
 			io.to(state.lobby.id).emit(events.NEW_MESSAGE, message); // TODO: maybe do socket.broadcast.to(state.lobby.id).emit(events.SEND_MESSAGE, message);
-			console.log("The message is: ", content, "was displayed in the lobby: ");
 		});
 	});
 	socket.on(events.DELETE_LOBBY, lobby => {
 		delete lobbyJoinedOrLeft[lobby.id];
 	});
 	socket.on("disconnect", () => {
+		console.log("A user disconnected");
 		if (state.lobby == null) {
 			return;
 		} else {
-			lobbyFacade.removeUserFromLobby(state.lobby, state.user, err => {
-				if (err) {
-					return console.log(err);
-				}
-			});
+			leaveLobby(state.lobby, state.user);
 		}
 	});
 	function joinLobby(lobby, user) {
@@ -138,19 +107,27 @@ io.on("connection", socket => {
 				// tODO: err handling
 				return console.log(err);
 			}
-			console.log(
-				"the user : ",
-				user,
-				"was added to the ",
-				lobby,
-				"in the db now ",
-				"Users joined = ",
-				lobbyJoinedOrLeft[lobby.id]
-			);
 			socket.join(lobby.id);
 			lobbyJoinedOrLeft[lobby.id].joined += 1;
-			console.log("Users joined = ", lobbyJoinedOrLeft[lobby.id]);
 			state.lobby = lobby;
+		});
+	}
+
+	function leaveLobby(lobby, user) {
+		lobbyFacade.removeUserFromLobby(lobby, user, err => {
+			if (err) {
+				// TODO: err handling
+				return console.log(err);
+			}
+			lobbyJoinedOrLeft[lobby.id].left += 1;
+			socket.leave(lobby.id);
+			lobby.lobby = null;
+			if (
+				lobbyJoinedOrLeft[lobby.id].joined > 0 &&
+				lobbyJoinedOrLeft[lobby.id].joined == lobbyJoinedOrLeft[lobby.id].left
+			) {
+				lobbyFacade.deleteLobby(lobby);
+			}
 		});
 	}
 });
