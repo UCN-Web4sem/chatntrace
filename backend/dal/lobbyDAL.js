@@ -4,14 +4,6 @@ const db = require("./firebase").child("lobbies/");
 module.exports = {
 	create(lobby, cb) {
 		db.child(lobby.id).set(lobby, cb);
-		db
-			.child(lobby.id)
-			.child("joined")
-			.set(lobby.joined);
-		db
-			.child(lobby.id)
-			.child("left")
-			.set(lobby.left);
 	},
 	getAll(cb) {
 		db.once("value").then(snapshot => {
