@@ -21,14 +21,20 @@ module.exports = {
 	},
 
 	addUserToLobby(lobby, user, cb) {
+		if (!lobby) return cb(new Error("Must provide a lobby"));
+		if (!user) return cb(new Error("Must provide a user"));
 		DAL.lobby.addUserToLobby(lobby, user, cb);
 	},
 
 	removeUserFromLobby(lobby, user, cb) {
+		if (!lobby) return cb(new Error("Must provide a lobby"));
+		if (!user) return cb(new Error("Must provide a user"));
 		DAL.lobby.removeUserFromLobby(lobby, user, cb);
 	},
 
 	addMessageToLobby(lobby, message, cb) {
+		if (!lobby) return cb(new Error("Must provide a lobby"));
+		if (!message) return cb(new Error("Must provide a message"));
 		DAL.lobby.addMessageToLobby(lobby, message, cb);
 	},
 	deleteLobby(lobby) {
