@@ -140,13 +140,16 @@ io.on("connection", socket => {
 
 	// GAME EVENTS
 	socket.on(events.GAME_ON_MOUSE_DOWN, point => {
-		socket.broadcast.emit(events.GAME_ON_MOUSE_DOWN, point);
+		if (!state.lobby) return;
+		socket.broadcast.to(state.lobby.id).emit(events.GAME_ON_MOUSE_DOWN, point);
 	});
 	socket.on(events.GAME_ON_MOUSE_MOVE, point => {
-		socket.broadcast.emit(events.GAME_ON_MOUSE_MOVE, point);
+		if (!state.lobby) return;
+		socket.broadcast.to(state.lobby.id).emit(events.GAME_ON_MOUSE_MOVE, point);
 	});
 	socket.on(events.GAME_ON_MOUSE_UP, () => {
-		socket.broadcast.emit(events.GAME_ON_MOUSE_UP);
+		if (!state.lobby) return;
+		socket.broadcast.to(state.lobby.id).emit(events.GAME_ON_MOUSE_UP);
 	});
 });
 
