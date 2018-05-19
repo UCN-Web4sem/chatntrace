@@ -52,12 +52,14 @@ const lobbyFacade = bll.lobbyFacade;
 const chatMessageFacade = bll.chatMessageFacade;
 
 let lobbyJoinedOrLeft = {};
+let lobbyGameEvents = {};
 lobbyFacade.getAll(lobbies => {
 	lobbies.forEach(lobby => {
 		lobbyJoinedOrLeft[lobby.id] = {
 			joined: 0,
 			left: 0
 		};
+		lobbyGameEvents[lobby.id] = [];
 	});
 });
 
@@ -82,6 +84,7 @@ io.on("connection", socket => {
 			joined: 0,
 			left: 0
 		};
+		lobbyGameEvents[lobby.id] = [];
 	});
 	socket.on(events.JOIN_LOBBY, (lobby, user) => {
 		joinLobby(lobby, user);
@@ -115,6 +118,7 @@ io.on("connection", socket => {
 			socket.join(lobby.id);
 			lobbyJoinedOrLeft[lobby.id].joined += 1;
 			state.lobby = lobby;
+			socket.emit(events.GAME_EVENT_HISTORY, lobbyGameEvents[lobby.id]);
 		});
 	}
 
@@ -134,19 +138,35 @@ io.on("connection", socket => {
 				lobbyFacade.deleteLobby(lobby);
 				socket.emit(events.DELETE_LOBBY, lobby);
 				delete lobbyJoinedOrLeft[lobby.id];
+				delete lobbyGameEvents[lobby.id];
 			}
 		});
 	}
 
 	// GAME EVENTS
 	socket.on(events.GAME_ON_MOUSE_DOWN, point => {
-		socket.broadcast.emit(events.GAME_ON_MOUSE_DOWN, point);
+		if (!state.lobby) return;
+		lobbyGameEvents[state.lobby.id].push({
+			event: events.GAME_ON_MOUSE_DOWN,
+			args: [point]
+		});
+		socket.broadcast.to(state.lobby.id).emit(events.GAME_ON_MOUSE_DOWN, point);
 	});
 	socket.on(events.GAME_ON_MOUSE_MOVE, point => {
-		socket.broadcast.emit(events.GAME_ON_MOUSE_MOVE, point);
+		if (!state.lobby) return;
+		lobbyGameEvents[state.lobby.id].push({
+			event: events.GAME_ON_MOUSE_MOVE,
+			args: [point]
+		});
+		socket.broadcast.to(state.lobby.id).emit(events.GAME_ON_MOUSE_MOVE, point);
 	});
 	socket.on(events.GAME_ON_MOUSE_UP, () => {
-		socket.broadcast.emit(events.GAME_ON_MOUSE_UP);
+		if (!state.lobby) return;
+		lobbyGameEvents[state.lobby.id].push({
+			event: events.GAME_ON_MOUSE_UP,
+			args: []
+		});
+		socket.broadcast.to(state.lobby.id).emit(events.GAME_ON_MOUSE_UP);
 	});
 });
 

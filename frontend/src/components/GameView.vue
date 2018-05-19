@@ -103,6 +103,19 @@ export default {
 				onmouseup();
 				socket.emit(events.GAME_ON_MOUSE_UP);
 			};
+
+			socket.on(events.GAME_EVENT_HISTORY, history => {
+				ctx.clearRect(0, 0, c.width, c.height);
+				let handlers = {};
+				handlers[events.GAME_ON_MOUSE_DOWN] = onmousedown;
+				handlers[events.GAME_ON_MOUSE_MOVE] = onmousemove;
+				handlers[events.GAME_ON_MOUSE_UP] = onmouseup;
+				history.forEach(evnt => {
+					const { event, args } = evnt;
+					const handler = handlers[event];
+					handler.apply(null, args);
+				});
+			});
 		})();
 	}
 };
