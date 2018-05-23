@@ -136,7 +136,7 @@ io.on("connection", socket => {
 				lobbyJoinedOrLeft[lobby.id].joined == lobbyJoinedOrLeft[lobby.id].left
 			) {
 				lobbyFacade.deleteLobby(lobby);
-				socket.emit(events.DELETE_LOBBY, lobby);
+				io.emit(events.DELETE_LOBBY, lobby);
 				delete lobbyJoinedOrLeft[lobby.id];
 				delete lobbyGameEvents[lobby.id];
 			}
